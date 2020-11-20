@@ -1,0 +1,2 @@
+19/11 - Fiz um pequeno menu interativo para a parte inicial do projeto (Sujeito a ser alterado)
+OBS: Fiquei um pouco curioso para criar um propio "velocimetro", pois q roda em python
