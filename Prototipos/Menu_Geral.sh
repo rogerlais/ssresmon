@@ -1,25 +1,20 @@
 #!/bin/bash
-#Fazer as alteraçoes necessarias, caso seja escolhido, configuro as opçoes
+
 Menu() {
 clear
-echo " Opções:"
-echo " 1."
-echo " 2."
-echo " 3."
-echo " A."
-echo " B."
-echo " C."
+echo " Escolha uma maquina:"
+echo " 1.Maquina-1"
+echo " 2.Maquina-2"
+echo " 3.Maquina-3"
 echo
 echo -n "Esolha uma opção: "
 read OPTION
 echo
 case $OPTION in
-    1) echo "Você escolheu a opção 1" ;;
+    1) echo "Você escolheu a opção 1" 
+	    ssh -t samir@192.168.1.7 -p 22 ./Teste_Menu_Parte-1.sh;;
     2) echo "Você escolheu a opção 2" ;;
     3) echo "Você escolheu a opção 3" ;;
-    a|A|"") echo "Você escolheu a opção A" ;;
-    b|B|"") echo "Você escolheu a opção B" ;;
-    c|C|"") echo "Você escolheu a opção C" ;;
     *) echo "Opção inválida" ;;
 esac
 
