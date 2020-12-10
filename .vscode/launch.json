@@ -1,0 +1,48 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    // ROGER terminalkind ajustado para script interativo
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "Bash-Debug current(H-C input arguments)",
+            "cwd": "${workspaceFolder}",
+            "program": "${file}",
+            "args": [
+                "/media/bash-ifpb/IFPB.ShellScript/dados/datafile09-02.txt",
+                //"-l",
+                "c",
+                "-f"
+            ],
+            "terminalKind": "integrated",
+            "env": {
+                "DBG": "yes"
+            }
+        },
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "Bash-Debug (select script from list of sh files)",
+            "cwd": "${workspaceFolder}",
+            "program": "${command:SelectScriptName}",
+            "args": [],
+            "terminalKind": "integrated",
+            "env": {
+                "DBG": "yes"
+            }
+        },
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "Bash-Debug (simplest configuration)",
+            "program": "${file}",
+            "terminalKind": "integrated",
+            "env": {
+                "DBG": "yes"
+            }
+        }
+    ]
+}
