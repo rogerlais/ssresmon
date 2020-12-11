@@ -1,0 +1,10 @@
+[dados de saida]
+https://github.com/tenox7/ttyplot 
+1 - Apresenta modo texto para a apresentação de dados
+2 - Apenas um gráfico por terminal, talvez gere a necessidade de split de tela
+
+
+[plugins para snmp]
+Caso haja tempo e métrica a ser coletada sem sucesso pelo serviço nativo, ver:
+https://collectd.org/features.shtml
+
