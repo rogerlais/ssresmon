@@ -16,7 +16,7 @@ while (true); do
         fi
 
         case ${escolha} in
-        1) ;;
+        1) ping 8.8.8.8 | sed -u 's/^.*time=//g; s/ ms//g' | ttyplot ;;
         2) ;;
         3) ;;
         4) ;;
