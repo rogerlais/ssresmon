@@ -1,8 +1,0 @@
-#Samir
-OBS: 1- As configuraçoes do segundo script vai ser os requisitos que o professor pediu, estou confuso em relaçao a isso.
-    
-     2- Se poder fazer um codigo que automaticamente ja copie o segundo script para a maquina acessada agradeço 
-
-Script Menu_Geral.sh : Funciona como script de acesso, para fazer a conexao ssh tem que digitar o nome e o ip da maquina que deseja acessar ( pensei nisso como mode de segurança), apos isso o segundo script entra em açao.
-
-Script Menu_Secundario : Onde as configuraçoes vao acontecer, fiz de uma maneira bem basica.

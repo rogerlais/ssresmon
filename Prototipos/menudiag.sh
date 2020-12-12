@@ -1,30 +1,35 @@
 #!/bin/bash
+#importando arquivos
+#nao sei por qual razao quando uso o ./Prototipos/nome do arquivo nao esta funcionando
+#menu em loop arrumar (o cancelar deste menu)
+#unica funçao funcionando eh a Inserir
+#para entrar na opçao inserir tem que apertar pela segunda vez
 
-dialog --infobox " Bem Vindo ao Gerenciador de Recursos " 3 45
-read
+source ./dialogMenu.sh
+source ./dialogInserir.sh
+source ./dialogMonitorar.sh
+source ./dialogEditarHost.sh
+source ./dialogRemover.sh
 
+
+#escolhendo um opçao
 while (true); do
+    men=$(get_Menu)
+    case ${men} in
+    0) exit ;;
+    1) #Monitorar
+        mon=$(get_Monitora)
 
-	escolha=$(dialog --stdout \
-		--menu "Escolha sua opçao:" \
-		0 0 0 \
-		1 'Monitorar Hosts' \
-		2 'Inserir Hosts' \
-		3 'Editar Hosts' \
-		4 'Remover Hosts' \
-		5 'Dashboard' \
-		6 'Configurar Exibiçao')
+        ;;
+    2) #Inserir
+        ins=$(get_Inserir)
 
-	if [ $? != 0 ]; then
-		exit 0
-	fi
-
-	case ${escolha} in
-	1) ./MonitorarHost.sh ;;
-	2) ./InserirHost.sh ;;
-	3) ./EditarHost.sh ;;
-	4) ./RemoverHost.sh ;;
-	5) ./Dashboard.sh ;;
-	6) ./ConfigurarExibiçao.sh ;;
-	esac
+        ;;
+    3) #Editar
+        edit=
+        ;;
+    4) #Remover
+        rem=$(get_Remove)
+        ;;
+    esac
 done
