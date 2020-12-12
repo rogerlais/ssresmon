@@ -8,3 +8,6 @@ https://github.com/tenox7/ttyplot
 Caso haja tempo e métrica a ser coletada sem sucesso pelo serviço nativo, ver:
 https://collectd.org/features.shtml
 
+[zenity]
+alterntiva para dialog de forma gui
+https://help.gnome.org/users/zenity/3.32/

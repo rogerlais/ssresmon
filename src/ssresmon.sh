@@ -30,9 +30,11 @@ function main() {
     # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/dialogRemover.sh"
     # shellcheck source=/dev/null
-    source "${SSRM_BASEDIR}/lib/ssrmlogs.sh"
+    source "${SSRM_BASEDIR}/lib/ssrmLogs.sh"
+    # shellcheck source=/dev/null
+    source "${SSRM_BASEDIR}/lib/ssrmHosts.sh"
 
-    ssrmInitLog "${SSRM_BASEDIR}/logs/$(date +%F).log"  #um log por dia
+    ssrmInitLog "${SSRM_BASEDIR}/logs/$(date +%F).log" #um log por dia
     show_menu
 }
 
@@ -46,7 +48,7 @@ function show_menu() {
             mon=$(get_Monitora)
             ;;
         2) #Inserir
-            hostData=$(get_newHostData)
+            register_HostData
             ;;
         3) #Editar
             edit=nullLines
