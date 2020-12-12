@@ -6,15 +6,21 @@ function yadHostData() {
     host_enab="${3}"
     #todo para o caso de todos os argumentos serem nulos - alterar titulo para novo registro de host
 
-    ret=$(yad --forms --title="Atributos do host" --text="Dados do host" \
-        --add-entry="Perfil(nome curto)" --entry-text="Valor inicial para perfil" \ #--help-entry "Deve ser compátivel com nome de arquivo" \
-        --add-entry="Nome/IP" \
-        --add-entry="Habilitado(S/N)")
+    ret=$(
+        yad --width=400 --mouse --title="Dados do host" \
+            --text="Por favor informe os seguintes detalhes:" --image="${SSRM_BASEDIR}/ifpb.png" --size="48px" \
+            --form --field="Perfil(nome curto)" "perfil" \
+            --field="Nome host/ip" "0.0.0.0" \
+            --field="Habilitado(S/N):CHK" 
+            # \ "" "" "alguma coisa!!" 'Sim!Não'
+    )
+
     retcode=${?}
     case "$retcode" in
     0)
         #trocar pipe por lago melhor no retorno
-        RETFS="${ret}"
+        RETFS=$( echo -e ${ret} )
+        export RETFS
         ;;
         #*Importante expandir as linhas antes
     252) #fechou janela sem confirmar

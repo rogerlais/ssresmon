@@ -16,4 +16,8 @@ Demontrou-se furada por não iniciali os valores dos campos - eu heim!!
 [yad]
 fork do zenity
 https://www.systutorials.com/docs/linux/man/1-yad/
-dicas: https://forums.bunsenlabs.org/viewtopic.php?id=1978&p=5
+dicas: 
+https://forums.bunsenlabs.org/viewtopic.php?id=1978&p=5
+https://www.thelinuxrain.com/articles/multiple-item-data-entry-with-yad
+https://www.mankier.com/1/yad
+https://sourceforge.net/p/yad-dialog/wiki/browse_pages/

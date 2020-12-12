@@ -43,7 +43,7 @@ function register_HostData() {
     host_ip="${2}"
     host_enab="${3}"
     edit_HostData "${host_profile}" "${host_ip}" "${host_enab}"
-    if [ -n "$RETFS" ]; then
+    if [ -n $RETFS ]; then
         #todo Fazer a busca por outro com os mesmos dados
         #todo processar o registro do host informado/confirmado
         echo 'ok'
