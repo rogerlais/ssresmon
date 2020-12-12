@@ -11,3 +11,9 @@ https://collectd.org/features.shtml
 [zenity]
 alterntiva para dialog de forma gui
 https://help.gnome.org/users/zenity/3.32/
+Demontrou-se furada por não iniciali os valores dos campos - eu heim!!
+
+[yad]
+fork do zenity
+https://www.systutorials.com/docs/linux/man/1-yad/
+dicas: https://forums.bunsenlabs.org/viewtopic.php?id=1978&p=5

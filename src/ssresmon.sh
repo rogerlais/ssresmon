@@ -6,6 +6,10 @@
 #para entrar na opçao inserir tem que apertar pela segunda vez
 
 SSRM_BASEDIR="${PWD}"
+RETFS=''
+RETFI=0
+RETFA=(0)
+export RETFS RETFI RETFA
 
 function main() {
     if [[ ${DBG^^} == "'YES'" ]]; then #depurador avalia '[[ 'YES' == YES ]]' como verdadeiro
@@ -22,7 +26,7 @@ function main() {
     # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/dialogMenu.sh"
     # shellcheck source=/dev/null
-    source "${SSRM_BASEDIR}/lib/dialogInsertHost.sh"
+    source "${SSRM_BASEDIR}/lib/dialogEditHost.sh"
     # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/dialogMonitorar.sh"
     # shellcheck source=/dev/null
@@ -41,14 +45,14 @@ function main() {
 function show_menu() {
     #escolhendo um opçao
     while (true); do
-        mainChoice=$(get_MainMenu)
-        case ${mainChoice} in
+        get_MainMenu >/dev/null
+        case $RETFI in
         0) exit ;;
         1) #Monitorar
             mon=$(get_Monitora)
             ;;
-        2) #Inserir
-            register_HostData
+        2)                             #Inserir
+            register_HostData "" "" "" #Dados nulos
             ;;
         3) #Editar
             edit=nullLines

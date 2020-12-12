@@ -34,18 +34,22 @@ function ssrmInitHosts() {
     fi
     #!pergunta - necessário para cada módulo importar o outro ou é global????
     # shellcheck source=/dev/null
-    source "${SSRM_BASEDIR}/dialogInsertHost.sh"
+    source "${SSRM_BASEDIR}/dialogEditHost.sh"
 }
 
 #Edita os dados de um host isoladamente
-function register_HostData () {
-    host_profile="{$1}"
-    host_ip="{$2}"
-    host_enab="{$3}"
-    hostData=$(edit_HostData "${host_profile}" "${host_ip}" "${host_enab}")
-    #Faz a busca por outro com os mesmos dados
+function register_HostData() {
+    host_profile="${1}"
+    host_ip="${2}"
+    host_enab="${3}"
+    edit_HostData "${host_profile}" "${host_ip}" "${host_enab}"
+    if [ -n "$RETFS" ]; then
+        #todo Fazer a busca por outro com os mesmos dados
+        #todo processar o registro do host informado/confirmado
+        echo 'ok'
+    fi    
+    echo "retorno da leitura de dados do novo host = ${RETFS}"    
 }
-
 
 #Varre repositório, abrindo cada arquivo a procura da assinatuta do profile desejado
 function ssrmLocateHost() {
