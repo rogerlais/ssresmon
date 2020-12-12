@@ -1,0 +1,11 @@
+Tema 2: Gerenciamento de Recursos
+
+- Configurar um servidor para centralizar o gerenciamento de recursos de outras máquinas:
+		memória
+		uso de cpu
+		latência
+		up e down na rede
+- Deve ter um arquivo de configuração;
+- Exibir gráficos (em modo texto? Usando gnuplot?);
+- Interfaces com menus, exibindo as máquinas configuradas;
+- O que mais a criatividade permitir.
