@@ -18,13 +18,32 @@ if ${DBG_ENV}; then
 fi
 
 #Leitra do caminho com os dados dos hosts registrados
-function ssrmGetHostsPath() {
+function ssrmHostsGetBasePath() {
     echo "${SSRM_BASEDIR}/hosts"
 }
 
+function ssrmHostsSaveData() {
+    hostdatafile="$(ssrmHostsGetBasePath)/${1}.txt"
+    echo -e "${1}\n${2}\n${3}\n." >"${hostdatafile}"
+    if [ $? ]; then
+        RETFI=0
+    else
+         RETFI=1
+    fi
+    
+}
+
 #Recebe o caminho pra o repositório dos dados dos hosts e faz sua verificação/inicialização
-function ssrmInitHosts() {
-    hpath=$(ssrmGetHostsPath)
+function ssrmHostsInitModule() {
+    #!pergunta - necessário para cada módulo importar o outro ou é global????
+    # shellcheck source=/dev/null
+    source "${SSRM_BASEDIR}/lib/dialogEditHost.sh"
+    # shellcheck source=/dev/null
+    source "${SSRM_BASEDIR}/lib/ssrmUtils.sh"
+    # shellcheck source=/dev/null
+    source "${SSRM_BASEDIR}/lib/dialogInfo.sh"
+    #todo rotina as ForceDirectories ajudaria
+    hpath=$(ssrmHostsGetBasePath)
     if [ ! -d "$hpath" ]; then
         mkdir "$hpath"
         if [ ! $? ]; then
@@ -32,39 +51,53 @@ function ssrmInitHosts() {
             exit 1
         fi
     fi
-    #!pergunta - necessário para cada módulo importar o outro ou é global????
-    # shellcheck source=/dev/null
-    source "${SSRM_BASEDIR}/dialogEditHost.sh"
 }
 
 #Edita os dados de um host isoladamente
-function register_HostData() {
+function ssrmHostsEditHost() {
     host_profile="${1}"
     host_ip="${2}"
     host_enab="${3}"
-    edit_HostData "${host_profile}" "${host_ip}" "${host_enab}"
-    if [ -n $RETFS ]; then
-        #todo Fazer a busca por outro com os mesmos dados
-        #todo processar o registro do host informado/confirmado
-        echo 'ok'
-    fi    
-    echo "retorno da leitura de dados do novo host = ${RETFS}"    
+    invokeEditHostData "${host_profile}" "${host_ip}" "${host_enab}"
+    if [ -n "$RETFS" ]; then
+        getParsedValues "${RETFS}"        #Carrega dados para RETFA
+        retArray+=("${RETFA[@]}")         #Recupera valor da global logo pra ser feliz
+        if [ ${#retArray[@]} == 3 ]; then #Valores validos
+            host_profile="${retArray[0]}"
+            host_ip="${retArray[1]}"
+            host_enab="${retArray[2]}"
+        else
+            echo "Valores passados inválidos: "
+            printf '%s\n' "${retArray[@]}"
+        fi
+        unset retArray
+        oldPath=$(ssrmHostsLocate "${host_profile}") #todo Fazer a busca por outro com os mesmos dados
+        if [ -n "$oldPath" ]; then
+            #todo mensagem de duplicidade de profile
+            invokeMsgBox "Já existe host com mesmo nome de perfil"
+        else
+            #Inicia o registro do novo host com os dados coletados
+            ssrmHostsSaveData "${host_profile}" "${host_ip}" "${host_enab}"
+            if [[ ${RETFI} == 0 ]]; then
+                invokeMsgBox "Host registrado com sucesso"
+            fi
+        fi
+    fi
 }
 
 #Varre repositório, abrindo cada arquivo a procura da assinatuta do profile desejado
-function ssrmLocateHost() {
+function ssrmHostsLocate() {
     if [ -n "${1}" ]; then
-        hpath=$(ssrmGetHostsPath)
-        for name in "$hpath"/*.txt; do
-            dataFile="${name}"
-            hostData=$(ssrmGetHostData "${dataFile}")
-            if [ hostData[0] == "${1}" ]; then
-                RETVAL=${hostData}
-                return
-            fi
-        done
+        hpath=$(ssrmHostsGetBasePath)
+        hmask="${hpath}/${1}.txt"
+        if [ -r "$hmask" ]; then
+            echo "${hmask}"
+        else
+            echo ''
+        fi
+    else
+        echo ''
     fi
-
 }
 
 #Espera receber os dados para a criação de novo host na base de dados
@@ -72,9 +105,11 @@ function ssrmLocateHost() {
 # 1 - Apelido
 # 2 - Nome/IP
 # 3 - habilitado para coleta ou não(opcional)
-function ssrm_Newhost() {
+function ssrmHostsNewHost() {
     profile="${1}"
     hostname="${2}"
     enabled="${3}"
+    ssrmHostsEditHost "${profile}" "${hostname}" "${enabled}"
+    #todo testar retfi=0 e mostar ok
 
 }

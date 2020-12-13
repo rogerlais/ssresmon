@@ -6,7 +6,7 @@
 #para entrar na opçao inserir tem que apertar pela segunda vez
 
 SSRM_BASEDIR="${PWD}"
-RETFS=''
+declare -g RETFS=''
 RETFI=0
 RETFA=(0)
 export RETFS RETFI RETFA
@@ -37,28 +37,32 @@ function main() {
     source "${SSRM_BASEDIR}/lib/ssrmLogs.sh"
     # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/ssrmHosts.sh"
+    # shellcheck source=/dev/null
+    source "${SSRM_BASEDIR}/lib/ssrmUtils.sh"
 
     ssrmInitLog "${SSRM_BASEDIR}/logs/$(date +%F).log" #um log por dia
+    ssrmHostsInitModule 
     show_menu
 }
 
 function show_menu() {
     #escolhendo um opçao
     while (true); do
+        unset RETFI
         get_MainMenu >/dev/null
         case $RETFI in
         0) exit ;;
         1) #Monitorar
-            mon=$(get_Monitora)
+            get_Monitora
             ;;
         2)                             #Inserir
-            register_HostData "" "" "" #Dados nulos
+            ssrmHostsNewHost "" "" "" #Dados nulos
             ;;
         3) #Editar
-            edit=nullLines
+            nullLines
             ;;
         4) #Remover
-            rem=$(get_Remove)
+            get_Remove
             ;;
         esac
     done

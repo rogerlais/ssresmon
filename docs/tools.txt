@@ -21,3 +21,10 @@ https://forums.bunsenlabs.org/viewtopic.php?id=1978&p=5
 https://www.thelinuxrain.com/articles/multiple-item-data-entry-with-yad
 https://www.mankier.com/1/yad
 https://sourceforge.net/p/yad-dialog/wiki/browse_pages/
+
+
+
+[alerta]
+vglobal=1
+ret=$(module_func 1 2 3 ) #QQ alteração de vglobal será perdidad de module_func para frente
+echo "${vglobal}" #Sempre volta 1

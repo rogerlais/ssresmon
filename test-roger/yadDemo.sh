@@ -2,7 +2,7 @@
 
 clear
 SSRM_BASEDIR="${PWD}/src"
-echo ${SSRM_BASEDIR}
+echo "${SSRM_BASEDIR}"
 
 yad --width=400 --title="Dados do host" --text="Por favor informe os seguintes detalhes:" \
 --image="${SSRM_BASEDIR}/ifpb.png" \
