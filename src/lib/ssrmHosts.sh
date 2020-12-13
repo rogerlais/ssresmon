@@ -28,9 +28,9 @@ function ssrmHostsSaveData() {
     if [ $? ]; then
         RETFI=0
     else
-         RETFI=1
+        RETFI=1
     fi
-    
+
 }
 
 #Recebe o caminho pra o repositório dos dados dos hosts e faz sua verificação/inicialização
@@ -42,14 +42,12 @@ function ssrmHostsInitModule() {
     source "${SSRM_BASEDIR}/lib/ssrmUtils.sh"
     # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/dialogInfo.sh"
-    #todo rotina as ForceDirectories ajudaria
     hpath=$(ssrmHostsGetBasePath)
-    if [ ! -d "$hpath" ]; then
-        mkdir "$hpath"
-        if [ ! $? ]; then
-            echo "Falha inicializando repositório para os hosts em ${hpath}"
-            exit 1
-        fi
+    forceDirectory "${hpath}"
+    if [ ! $? ]; then
+        lastError=$?
+        invokeMsgBox "Falha inicializando repositório para os hosts em ${hpath}"
+        return $lastError
     fi
 }
 
@@ -59,6 +57,7 @@ function ssrmHostsEditHost() {
     host_ip="${2}"
     host_enab="${3}"
     invokeEditHostData "${host_profile}" "${host_ip}" "${host_enab}"
+    # shellcheck disable=2153
     if [ -n "$RETFS" ]; then
         getParsedValues "${RETFS}"        #Carrega dados para RETFA
         retArray+=("${RETFA[@]}")         #Recupera valor da global logo pra ser feliz
@@ -71,15 +70,14 @@ function ssrmHostsEditHost() {
             printf '%s\n' "${retArray[@]}"
         fi
         unset retArray
-        oldPath=$(ssrmHostsLocate "${host_profile}") #todo Fazer a busca por outro com os mesmos dados
+        oldPath=$(ssrmHostsLocate "${host_profile}") #Faz a busca por outro com os mesmos dados
         if [ -n "$oldPath" ]; then
-            #todo mensagem de duplicidade de profile
-            invokeMsgBox "Já existe host com mesmo nome de perfil"
+            invokeMsgBox "$(printf '%b' "Já existe host com mesmo nome de perfil\n(${host_profile})")"
         else
             #Inicia o registro do novo host com os dados coletados
             ssrmHostsSaveData "${host_profile}" "${host_ip}" "${host_enab}"
             if [[ ${RETFI} == 0 ]]; then
-                invokeMsgBox "Host registrado com sucesso"
+                invokeMsgBox "Host ${host_profile} salvo com sucesso"
             fi
         fi
     fi
@@ -110,6 +108,47 @@ function ssrmHostsNewHost() {
     hostname="${2}"
     enabled="${3}"
     ssrmHostsEditHost "${profile}" "${hostname}" "${enabled}"
-    #todo testar retfi=0 e mostar ok
+}
 
+function ssrmHostsGetList() {
+    #todo montar string com a lista dos profile(nome, hostname) onde cada linha é nome|hostname
+    hpath="$(ssrmHostsGetBasePath)/*"
+    result=''
+    for fname in ${hpath}; do
+        if [ "$hpath" != "$fname" ]; then
+            IFS=$'\n' read -r -d '\n' profile host_ip host_enab _ <"${fname}" #fresca com dummy mas usa _ pqp
+            item="${profile}|${host_ip}\n"
+            result+=${item}
+        else
+            return 1 #Sem dados/lista vazia
+        fi
+    done
+    RETFS=${result}
+    return 0
+}
+
+function ssrmHostsSelect() {
+    #Recebe string onde cada linha possui <profilename>|<hostname>
+    inputList=${1} #lista com os hosts existentes
+    invokeSelectHost "${inputList}"
+    if [ $? ]; then
+        echo "${RETFS}"
+    else
+        return $?
+    fi    
+}
+
+#Seleciona host da lista
+function ssrmHostsMonitorHost() {
+    ssrmHostsGetList #Monta a string com a lista de hosts
+    if [ $? ]; then
+        hlist=${RETFS}             #Valor ainda escaped
+        ssrmHostsSelect "${hlist}" #Mostra janela para escolha do hos
+        if [ $? ]; then
+            sel=${RETFS} #Armazena o host selecionado
+            invokeMonitoreHost "${sel}"
+        fi
+    else
+        invokeMsgBox "Não há dados de hosts cadastrados no momento"
+    fi
 }

@@ -4,7 +4,7 @@ echo '{
 módulo com as rotinas de logo globais
 }' >/dev/null
 
-function ssrmInitLog() {
+function ssrmLogInit() {
     parentdir="$(dirname "${1}}")"
     if [ ! -d "$parentdir" ]; then
         mkdir "$parentdir"

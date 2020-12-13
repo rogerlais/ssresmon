@@ -21,6 +21,8 @@ https://forums.bunsenlabs.org/viewtopic.php?id=1978&p=5
 https://www.thelinuxrain.com/articles/multiple-item-data-entry-with-yad
 https://www.mankier.com/1/yad
 https://sourceforge.net/p/yad-dialog/wiki/browse_pages/
+http://rpm.pbone.net/manpage_idpl_17003956_numer_1_nazwa_yad.html
+https://manpages.debian.org/testing/yad/yad.1.en.html
 
 
 

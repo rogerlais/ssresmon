@@ -7,8 +7,7 @@ function yadMainMenu() {
 			1 "Monitorar host" "Visualizar um host específico" \
 			2 "Inserir host" "Registrar um novo host p/ operação" \
 			3 "Editar host" "Alterar dados de host existente" \
-			4 "Remover host" "Remover entrada de host existente"
-	)
+			4 "Remover host" "Remover entrada de host existente" )
 	retcode=${?}
 	case "$retcode" in
 	0)                                    #Escolha efetivada
@@ -19,7 +18,7 @@ function yadMainMenu() {
 	255) #indica que aplicação será encerrada, pois foi cancelado pelo usuario
 		RETFI=0 ;;
 	*)
-		echo "Valor de retorno #{?} foi inexperado em get_MainMenu()"
+		echo "Valor de retorno #{?} foi inexperado em invokeMainMenu()"
 		exit 0
 		;;
 	esac
@@ -51,15 +50,15 @@ function show_MainMenu() {
 	255) #indica que aplicação será encerrada, pois foi cancelado pelo usuario
 		echo "0" ;;
 	*)
-		echo "Valor de retorno #{?} foi inexperado em get_MainMenu()"
+		echo "Valor de retorno #{?} foi inexperado em invokeMainMenu()"
 		exit 0
 		;;
 	esac
 }
 
-function get_MainMenu() {
+function invokeMainMenu() {
 	yadMainMenu
 }
 
-#ret=$(get_MainMenu)
+#ret=$(invokeMainMenu)
 #echo -e "retorno: ${ret}"

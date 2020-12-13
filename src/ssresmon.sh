@@ -5,10 +5,10 @@
 #unica funçao funcionando eh a Inserir
 #para entrar na opçao inserir tem que apertar pela segunda vez
 
-SSRM_BASEDIR="${PWD}"
+SSRM_BASEDIR="${PWD}"  #Pode ser alterado para depuração
 declare -g RETFS=''
-RETFI=0
-RETFA=(0)
+declare -g -i RETFI=0
+declare -g -a RETFA=(0)
 export RETFS RETFI RETFA
 
 function main() {
@@ -39,8 +39,10 @@ function main() {
     source "${SSRM_BASEDIR}/lib/ssrmHosts.sh"
     # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/ssrmUtils.sh"
+    # shellcheck source=/dev/null
+    source "${SSRM_BASEDIR}/lib/dialogSelectHost.sh"
 
-    ssrmInitLog "${SSRM_BASEDIR}/logs/$(date +%F).log" #um log por dia
+    ssrmLogInit "${SSRM_BASEDIR}/logs/$(date +%F).log" #um log por dia
     ssrmHostsInitModule 
     show_menu
 }
@@ -49,11 +51,11 @@ function show_menu() {
     #escolhendo um opçao
     while (true); do
         unset RETFI
-        get_MainMenu >/dev/null
+        invokeMainMenu >/dev/null
         case $RETFI in
         0) exit ;;
         1) #Monitorar
-            get_Monitora
+            ssrmHostsMonitorHost
             ;;
         2)                             #Inserir
             ssrmHostsNewHost "" "" "" #Dados nulos

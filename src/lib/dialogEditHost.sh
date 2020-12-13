@@ -4,11 +4,14 @@ function yadEditHostData() {
     host_profile="${1}"
     host_ip="${2}"
     host_enab="${3}"
+
     #TODO para o caso de todos os argumentos serem nulos - alterar titulo para novo registro de host
 
     if [ -z "${host_profile}" ] && [ -z "${host_ip}" ] ; then
          initial_enabled='TRUE'
+         initial_title='Dados do novo host'
     else
+        initial_title="Editando os dados para [ ${1} ]"
         if [ "${host_enab}" ]; then
              initial_enabled='TRUE'
         else
@@ -16,7 +19,7 @@ function yadEditHostData() {
         fi        
     fi
     ret=$(
-        yad --width=400 --mouse --title="Dados do host" \
+        yad --width=400 --mouse --title="${initial_title}" \
             --text="Por favor informe os seguintes detalhes:" --image="${SSRM_BASEDIR}/ifpb.png" \
             --form --field="Perfil(nome curto)" "perfil" \
             --field="Nome host/ip" "0.0.0.0" \
