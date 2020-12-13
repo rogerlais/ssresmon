@@ -1,13 +1,18 @@
 #!/bin/bash
 
 function yadMainMenu() {
+	ssrmLog "--image=\"${SSRM_BASEDIR}/ifpb.png\""
+
+	#todo tentar trocar imagem do menu
 	ret=$(
-		yad --list \
+		yad --list  --image="gtk-execute" \
 			--title="Menu Principal" --mouse --column="#" --column="Opção" --column="Descrição" --width=480 --height=250 \
 			1 "Monitorar host" "Visualizar um host específico" \
 			2 "Inserir host" "Registrar um novo host p/ operação" \
 			3 "Editar host" "Alterar dados de host existente" \
-			4 "Remover host" "Remover entrada de host existente" )
+			4 "Remover host" "Remover entrada de host existente" \
+			5 "Dashboard" "Exibe dashboard(parcial)" 
+			)
 	retcode=${?}
 	case "$retcode" in
 	0)                                    #Escolha efetivada

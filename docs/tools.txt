@@ -1,3 +1,22 @@
+[prg]
+#! VER link https://askubuntu.com/questions/316280/zenity-progress-bar-and-output
+#!/bin/bash
+FIFO=$(mktemp -u)
+mkfifo $FIFO
+(cat $FIFO | zenity --progress --pulsate --auto-close) &
+
+response=$(process)
+
+echo 'Bye bye' >$FIFO
+rm -f $FIFO
+
+exit
+
+[dica de como passar dados para o yad]
+https://stackoverflow.com/questions/49809236/yad-multi-progress-bar-with-background-processes-bash
+https://askubuntu.com/questions/930994/how-to-make-a-progress-bar-work-in-zenity
+
+
 [dados de saida]
 https://github.com/tenox7/ttyplot 
 1 - Apresenta modo texto para a apresentação de dados
@@ -23,6 +42,8 @@ https://www.mankier.com/1/yad
 https://sourceforge.net/p/yad-dialog/wiki/browse_pages/
 http://rpm.pbone.net/manpage_idpl_17003956_numer_1_nazwa_yad.html
 https://manpages.debian.org/testing/yad/yad.1.en.html
+https://roitier.pro.br/wp-content/uploads/2018/06/Apresentando-o-Yad-Tutorial-Viva-o-Linux.pdf
+https://sanana.kiev.ua/index.php/yad - russo trabalhando!!!
 
 
 

@@ -30,10 +30,6 @@ function main() {
     # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/dialogMonitorar.sh"
     # shellcheck source=/dev/null
-    source "${SSRM_BASEDIR}/lib/dialogEditarHost.sh"
-    # shellcheck source=/dev/null
-    source "${SSRM_BASEDIR}/lib/dialogRemover.sh"
-    # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/ssrmLogs.sh"
     # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/ssrmHosts.sh"
@@ -61,11 +57,15 @@ function show_menu() {
             ssrmHostsNewHost "" "" "" #Dados nulos
             ;;
         3) #Editar
-            nullLines
+            ssrmHostsChangeHost
             ;;
         4) #Remover
-            get_Remove
+            ssrmHostsRemoveHost
             ;;
+        5) #Remover
+            ssrmDashShow #todo implementar urgente
+            ;;
+
         esac
     done
 }

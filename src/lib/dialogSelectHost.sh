@@ -2,7 +2,7 @@
 
 function yadSelectHost() {
     lineCount=1
-    str=$(echo -e "${1}")  #"deescapeia"
+    str=$(echo -e "${1}") #"deescapeia"
     items=''
     while IFS=$'|' read -r profile hostname || [ -n "$profile" ]; do
         #items+="${lineCount} \"${profile}\" \"${hostname}\" \\ \n"
@@ -10,7 +10,7 @@ function yadSelectHost() {
         ((lineCount++))
     done <<<"${str}"
     cmdLine="yad --list --image=\"${SSRM_BASEDIR}/ifpb.png\" --title=\"Lista de hosts\" --mouse --column=\"##\" --column=\"Profile\" --column=\"Hostname/IP\" --width=700 --height=250 ${items}"
-    ret=$( eval "${cmdLine}" )
+    ret=$(eval "${cmdLine}")
     retcode=${?}
     case "$retcode" in
     0) #Escolha efetivada
@@ -18,18 +18,21 @@ function yadSelectHost() {
         RETFS="$(cut -d '|' -f 2 <<<"$ret")" #**para yad "|"" separa retorno. Pegar o campo desejado
         ;;
     1) #cancelado
-        RETFS='' ;;
+        RETFS=''
+        return ${retcode}
+        ;;
     255) #indica que aplicação será encerrada, pois foi cancelado pelo usuario
         # shellcheck disable=2034
-        RETFS='' ;;
+        RETFS=''
+        return ${retcode}
+        ;;
     *)
         msg="Valor de retorno #{?} foi inexperado em invokeMainMenu()"
         ssrmLog "${msg}"
-        echo "${msg}"  #todo SAMIR - usar tee depois para não repetir
+        echo "${msg}" #todo SAMIR - usar tee depois para não repetir
         exit 0
         ;;
     esac
-
 }
 
 function invokeSelectHost() {
