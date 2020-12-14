@@ -1,11 +1,12 @@
 #!/bin/bash
 
 function yadMainMenu() {
-	ssrmLog "--image=\"${SSRM_BASEDIR}/ifpb.png\""
+#	ssrmLog "--image=\"${SSRM_BASEDIR}/ifpb_3.png\""
 
 	#todo tentar trocar imagem do menu
 	ret=$(
-		yad --list  --image="gtk-execute" \
+		yad --list  \
+			--image=\"${SSRM_BASEDIR}/ifpb_3.png\" \
 			--title="Menu Principal" --mouse --column="#" --column="Opção" --column="Descrição" --width=480 --height=250 \
 			1 "Monitorar host" "Visualizar um host específico" \
 			2 "Inserir host" "Registrar um novo host p/ operação" \
@@ -23,7 +24,7 @@ function yadMainMenu() {
 	255) #indica que aplicação será encerrada, pois foi cancelado pelo usuario
 		RETFI=0 ;;
 	*)
-		echo "Valor de retorno #{?} foi inexperado em invokeMainMenu()"
+		echo "Valor de retorno #{?} foi inexperado em invokeMainMenu()" | tee
 		exit 0
 		;;
 	esac
@@ -55,7 +56,7 @@ function show_MainMenu() {
 	255) #indica que aplicação será encerrada, pois foi cancelado pelo usuario
 		echo "0" ;;
 	*)
-		echo "Valor de retorno #{?} foi inexperado em invokeMainMenu()"
+		echo "Valor de retorno #{?} foi inexperado em invokeMainMenu()" | tee
 		exit 0
 		;;
 	esac

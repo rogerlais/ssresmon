@@ -201,10 +201,11 @@ function ssrmHostsReadData() {
     fi
 }
 
+#Apos remover ainda fica mostrando o nome do host em Monitorar, mas se fechar o programa e abri novamente sai
 function ssrmHostsRemoveHost () {
     __ssrmHostsGetList #Monta a string com a lista de hosts
     if [ $? ]; then
-        hlist=${RETFS}             #Valor ainda escaped
+        hlist=${RETFS}            #Valor ainda escaped
         ssrmHostsSelect "${hlist}" #Mostra janela para escolha do hos
         if [ $? ]; then
             sel=${RETFS} #Armazena o host selecionado

@@ -29,7 +29,7 @@ function yadSelectHost() {
     *)
         msg="Valor de retorno #{?} foi inexperado em invokeMainMenu()"
         ssrmLog "${msg}"
-        echo "${msg}" #todo SAMIR - usar tee depois para não repetir
+        echo "${msg}" | tee #todo SAMIR - usar tee depois para não repetir
         exit 0
         ;;
     esac
