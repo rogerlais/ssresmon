@@ -1,54 +1,29 @@
 #!/bin/bash
 
-input=$1
+clear
 
-declare -a addresses
-declare -a cpu_last
-declare -a cpu_last_sum
-declare -a cpu_usage
 
-# read in the list of addresses to ssh in
-i=0
-while IFS= read -r line; do
-    addresses[$i]=$line
-    i=$i+1
-done <"$input"
+samplerFile="/media/bash-ifpb/sampler/run.yml"
 
-while :; do
-    for i in "${!addresses[@]}"; do
+/usr/local/bin/sampler -c "${samplerFile}"
 
-        # Get the first line with aggregate of all CPUs
-        cpu_now=($(ssh ${addresses[$i]} head -n1 /proc/stat))
 
-        # Get all columns but skip the first (which is the "cpu" string)
-        cpu_sum="${cpu_now[@]:1}"
-        # Replace the column seperator (space) with +
-        cpu_sum=$((${cpu_sum// /+}))
-        # Get the delta between two reads
-        cpu_delta=$((cpu_sum - cpu_last_sum[$i]))
-        # Get the idle time Delta
-        cpu_idle=$((cpu_now[4] - cpu_last[$i]))
-        # Calc time spent working
-        cpu_used=$((cpu_delta - cpu_idle))
-        # Calc percentage
-        cpu_usage[$i]=$((100 * cpu_used / cpu_delta))
+exit
 
-        # Keep this as last for our next read
-        cpu_last[$i]="${cpu_now[4]}"
-        cpu_last_sum[$i]=$cpu_sum
-    done
+dataFile="${PWD}/test-roger/miniTemplate.html"
+htmlFile="file:/${dataFile}"
+echo "${htmlFile}"
+yad --html --width=800 --height=600 --uri="${htmlFile}"
+yad --html --browser --width=800 --height=600 --uri="${htmlFile}"
+cat "${dataFile}"
+yad --html --browser --width=800 --height=600 < "${dataFile}"
 
-    # print the results
-    for i in "${!addresses[@]}"; do
-        printf "${addresses[$i]}: ${cpu_usage[$i]}     \n"
-    done
+htmlFile="file:/${PWD}/test-roger/template.html"
+echo "${htmlFile}"
+yad --html --width=800 --height=600 --uri="${htmlFile}"
+yad --html --browser --width=800 --height=600 --uri="${htmlFile}"
 
-    # Wait a second before the next read
-    sleep 1
-
-    # clear the previous lines
-    for i in "${!addresses[@]}"; do
-        tput cuu1 # move cursor up by one line
-    done
-
-done
+yad --html --browser --uri="http://wttr.in/$location" --width=900 --height=700 --button="Return!gtk-ok:0" --button="Exit!gtk-cancel:1" --title="Weather"
+if (($? == 1)); then
+    exit
+fi
