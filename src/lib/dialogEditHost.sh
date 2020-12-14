@@ -41,7 +41,7 @@ function yadEditHostData() {
         #!atenção para possivel stress por não ter linha(s)
         msg="Valor de retorno #${retcode} foi inexperado em get_newHostData()"
         ssrmLog "${msg}" #todo SAMIR pipe com tee para desduplicar
-        echo "${msg}"
+        echo "${msg}" | tee
         exit 0
         ;;
     esac
