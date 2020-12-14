@@ -10,5 +10,7 @@ function yadSelectMonitorar() {
             3 "Latencia" "" \
             4 "Up e Down da Rede" "" \
     )
+
+    echo ${ret}
 }
 yadSelectMonitorar

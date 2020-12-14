@@ -146,7 +146,7 @@ function ssrmHostsSelect() {
     inputList=${1} #lista com os hosts existentes
     invokeSelectHost "${inputList}"
     if [ $? ]; then
-        echo "${RETFS}"
+        ${RETFS}  #alterei de echo "${RETFS}" >> ${RETFS}
     else
         return $?
     fi
