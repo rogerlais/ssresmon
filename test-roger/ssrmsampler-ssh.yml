@@ -1,0 +1,14 @@
+ runcharts:
+  - title: Latência do site do IFPB
+    position: [[0, 8], [40, 24]]
+    rate-ms: 500
+    pty: true
+    init: ssh -i ~/.ssh/id_rsa roger@192.168.1.115
+    legend:
+        enabled: true
+        details: false
+    scale: 2
+    items:
+      - label: IFPB
+        color: 178
+        sample: curl -o /dev/null -s -w '%{time_total}'  https://www.ifpb.edu.br/

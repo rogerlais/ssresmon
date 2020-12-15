@@ -7,10 +7,8 @@ source "${SSRM_BASEDIR}/lib/dialogInfo.sh"
 
 #* vars protegidas
 #declare -r SAMPLER_FILE="~/ssrmsampler.yml"
-#declare -r SAMPLER_RUNTIME="/usr/local/bin/sampler"
-
-declare -r SAMPLER_FILE="~/ssrmsampler.yml"
-declare -r SAMPLER_RUNTIME="~/sampler"
+declare -r REMOTE_COMMAND="/usr/local/bin/remote.sh"
+declare -r LOGON_USER="roger"  #!Devido a mudança do projeto que sai do SNMP para ssh, tal parametro não existia
 
 #Faz conexão com o host remoto via ssh e mostra sampler
 function invokeMonitoreHost() {
@@ -26,23 +24,17 @@ function invokeMonitoreHost() {
         return $retcode
     fi
     if [ -n "$hostLkp" ]; then
-        hostLkp='192.168.1.115'
+        #ssh -t roger@192.168.1.115 "sampler -c ssrmsampler.yml" ! esta foi a STA para a entrega, ou seja chamada crua e nua 
         #msgDetail=$(ssh -t -i ~/id_rsa.pem roger@"${hostLkp}" \""${SAMPLER_RUNTIME} -c ${SAMPLER_FILE}\"" 2>&1 )
-        scmd='ls; read -p -r "veja a merda"'
-        #scmd=$(printf -v __ %q "${cmd}")
-        printf -v scmd '%q' "${scmd}"
-        scmd=$(echo -e "${scmd}")
-        #msgDetail=$(ssh -t -i ~/id_rsa.pem roger@"${hostLkp} ${scmd}" 2>&1)
-
-        ssh -t roger@192.168.1.115 "sampler -c ssrmsampler.yml"
+        msgDetail="Parabéns ao par BASHxSSH!"  #!Não encontrada solução para captura do erro remoto em todos os níveis
+        #ssh -t "${LOGON_USER}@${hostLkp}" "${REMOTE_COMMAND}"
+        ssh -t "${LOGON_USER}@${hostLkp}" "${REMOTE_COMMAND}"
+        retcode=$?
         clear
-        retcode=0
-
-        #ssh -t -i ~/id_rsa.pem roger@"${hostLkp}" \""${SAMPLER_RUNTIME} -c ${SAMPLER_FILE}\""
-        #ssh -t -i ~/id_rsa.pem roger@"${hostLkp}" \""${SAMPLER_RUNTIME} -c ${SAMPLER_FILE}\""
-        retcode=${?}
         if ! ((retcode)); then
-            ssrmLog "Monitoramento ao host ${hostLkp} finalizado com sucesso."
+            msg="Monitoramento ao host \"${1}\" endereçado por: \"${hostLkp}\" finalizado com sucesso."
+            ssrmLog "${msg}"
+            invokeMsgBox "${msg}"
         else
             #Testar arquivos via funções
             msg="Falha durante acesso SSH ao host \"(${1})\"\nEndereço:${hostLkp}\nCódigo de erro: ${retcode} \nDetalhes:\n${msgDetail}"

@@ -1,3 +1,6 @@
+[ssh]
+realmente necessário uso de -t, mas trava com redir de erro para var 
+
 [prg]
 #! VER link https://askubuntu.com/questions/316280/zenity-progress-bar-and-output
 #!/bin/bash

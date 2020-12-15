@@ -1,0 +1,9 @@
+textboxes:
+  - title: HTOP
+    position: [[0, 8], [80, 24]]
+    rate-ms: 1000
+    color: 121
+    pty: true
+    init: ssh -i ~/.ssh/id_rsa roger@192.168.1.115
+    sample: echo q | htop -C | aha --line-fix | html2text -width 999 | grep -v "F1Help\|xml
+        version="
