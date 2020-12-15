@@ -26,3 +26,19 @@ function forceDirectory() {
         fi
     fi
 }
+
+function runRemote() {
+  remoteHost=$1
+  logonUser=$2
+  local args script
+  array=("${$@:2}")
+  script="${1}"
+  shift
+
+  # generate eval-safe quoted version of current argument list
+  printf -v args '%q ' "${array[@]}"
+
+  # pass that through on the command line to bash -s
+  # note that $args is parsed remotely by /bin/sh, not by bash!
+  ssh -t "${logonUser}"@"${remoteHost}" "bash -s -- $args" <"$script"
+}
