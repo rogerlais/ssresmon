@@ -27,8 +27,10 @@ function main() {
     source "${SSRM_BASEDIR}/lib/dialogMenu.sh"
     # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/dialogEditHost.sh"
+    #todo remover linhas 
+    #! - remover as 2 seguintes
     # shellcheck source=/dev/null
-    source "${SSRM_BASEDIR}/lib/dialogMonitorar.sh"
+    #source "${SSRM_BASEDIR}/lib/dialogMonitorar.sh"
     # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/ssrmLogs.sh"
     # shellcheck source=/dev/null
@@ -37,6 +39,9 @@ function main() {
     source "${SSRM_BASEDIR}/lib/ssrmUtils.sh"
     # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/dialogSelectHost.sh"
+    # shellcheck source=/dev/null
+    source "${SSRM_BASEDIR}/lib/dialogMonitorHost.sh"
+
 
     ssrmLogInit "${SSRM_BASEDIR}/logs/$(date +%F).log" #um log por dia
     ssrmHostsInitModule 
@@ -65,10 +70,10 @@ function show_menu() {
         5) #Remover
             ssrmDashShow #todo implementar urgente
             ;;
-
         esac
     done
 }
 
 clear
 main
+echo "ssresmon encerrado.!"

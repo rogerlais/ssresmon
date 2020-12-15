@@ -43,11 +43,9 @@ function ssrmHostsInitModule() {
     # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/dialogInfo.sh"
     hpath=$(__ssrmHostsGetBasePath)
-    forceDirectory "${hpath}"
-    if [ ! $? ]; then
-        lastError=$?
+    if ! forceDirectory "${hpath}"; then
         invokeMsgBox "Falha inicializando repositório para os hosts em ${hpath}"
-        return $lastError
+        return 1
     fi
 }
 
@@ -56,19 +54,18 @@ function _ssrmHostsEditHost() {
     host_profile="${1}"
     host_ip="${2}"
     host_enab="${3}"
-    invokeEditHostData "${host_profile}" "${host_ip}" "${host_enab}"
-    if [ ! $? ]; then #Houve cancelamento ou erro
+    if ! invokeEditHostData "${host_profile}" "${host_ip}" "${host_enab}"; then #Houve cancelamento ou erro
         return $?
     fi
     unset RETFA
     getParsedValues "${RETFS}"        #Carrega dados para RETFA
-    retArray=("${RETFA[@]}")         #Recupera valor da global logo pra ser feliz
+    retArray=("${RETFA[@]}")          #Recupera valor da global logo pra ser feliz
     if [ ${#retArray[@]} == 3 ]; then #!(3)Valor valido vai depender da quantidade de dados
         host_profile="${retArray[0]}"
         host_ip="${retArray[1]}"
         host_enab="${retArray[2]}"
     else
-        msg=$( printf "%s\n%s" "Valores passados inválidos: " "${retArray[@]}" )
+        msg=$(printf "%s\n%s" "Valores passados inválidos: " "${retArray[@]}")
         invokeMsgBox "${msg}"
     fi
     unset retArray
@@ -145,22 +142,17 @@ function ssrmHostsSelect() {
     #Recebe string onde cada linha possui <profilename>|<hostname>
     inputList=${1} #lista com os hosts existentes
     invokeSelectHost "${inputList}"
-    if [ $? ]; then
-        ${RETFS}  #alterei de echo "${RETFS}" >> ${RETFS}
-    else
-        return $?
-    fi
 }
 
 #Seleciona host da lista
 function ssrmHostsMonitorHost() {
-    __ssrmHostsGetList #Monta a string com a lista de hosts
-    if [ $? ]; then
+    if __ssrmHostsGetList; then    #Monta a string com a lista de hosts
         hlist=${RETFS}             #Valor ainda escaped
         ssrmHostsSelect "${hlist}" #Mostra janela para escolha do hos
-        if [ $? ]; then
-            sel=${RETFS} #Armazena o host selecionado
-            invokeMonitoreHost "${sel}"  #todo implementar urgentemente
+        retcode=$?
+        if ! ((retcode)); then
+            sel=${RETFS}                #Armazena o host selecionado
+            invokeMonitoreHost "${sel}" #todo implementar urgentemente
         fi
     else
         invokeMsgBox "Não há dados de hosts cadastrados no momento"
@@ -168,18 +160,17 @@ function ssrmHostsMonitorHost() {
 }
 
 function ssrmHostsChangeHost() {
-    __ssrmHostsGetList #Monta a string com a lista de hosts
-    if [ $? ]; then
-        hlist=${RETFS}             #Valor ainda escaped
-        ssrmHostsSelect "${hlist}" #Mostra janela para escolha do hos
-        if [ $? ]; then
-            sel=${RETFS} #Armazena o host selecionado
+    if __ssrmHostsGetList; then             #Monta a string com a lista de hosts
+        hlist=${RETFS}                      #Valor ainda escaped
+        if ssrmHostsSelect "${hlist}"; then #Mostra janela para escolha do hosts
+            sel=${RETFS}                    #Armazena o host selecionado
             ssrmHostsReadData "${sel}"
-            if [ $? ]; then
+            retcode=$?
+            if ! ((retcode)); then
                 retArray=("${RETFA[@]}")
                 _ssrmHostsEditHost "${retArray[0]}" "${retArray[1]}" "${retArray[2]}"
             else
-                return $?
+                return $retcode
             fi
         fi
     else
@@ -197,26 +188,31 @@ function ssrmHostsReadData() {
         RETFA=("${profile}" "${host_ip}" "${host_enab}")
         return 0
     else
-        return 1
+        return $? #volta o erro do arquivo não ser lido
     fi
 }
 
 #Apos remover ainda fica mostrando o nome do host em Monitorar, mas se fechar o programa e abri novamente sai
-function ssrmHostsRemoveHost () {
-    __ssrmHostsGetList #Monta a string com a lista de hosts
-    if [ $? ]; then
-        hlist=${RETFS}            #Valor ainda escaped
-        ssrmHostsSelect "${hlist}" #Mostra janela para escolha do hos
-        if [ $? ]; then
-            sel=${RETFS} #Armazena o host selecionado
+function ssrmHostsRemoveHost() {
+    if __ssrmHostsGetList; then             #Monta a string com a lista de hosts
+        hlist=${RETFS}                      #Valor ainda escaped
+        if ssrmHostsSelect "${hlist}"; then #Mostra janela para escolha do hosts
+            sel=${RETFS}                    #Armazena o host selecionado
             dataFile=$(ssrmHostsLocate "${sel}")
-            rm "${dataFile}"
-            if [ $? ]; then
-                invokeMsgBox "Host (\"${sel}\") removido com sucesso."        
-            fi           
+            if [ -f "$dataFile" ]; then
+                rm "${dataFile}"
+                errCode=${?}
+                if ! ((errCode)); then
+                    invokeMsgBox "Host (\"${sel}\") removido com sucesso."
+                else
+                    msg="Falha ao remover dados do host:${sel}\nErro:${errCode}"
+                    ssrmLog "${msg}"
+                    invokeMsgBox "${msg}"
+                    return ${errCode}
+                fi
+            fi
         fi
     else
         invokeMsgBox "Sua lista de hosts eatá vazia no momento"
-    fi    
+    fi
 }
-

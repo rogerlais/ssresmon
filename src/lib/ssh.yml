@@ -1,0 +1,7 @@
+variables:
+  sshconnection: ssh -i ~/id_rsa.pem roger@192.168.1.115
+textboxes:
+  - title: SSH
+    pty: true
+    init: $sshconnection
+    sample: top

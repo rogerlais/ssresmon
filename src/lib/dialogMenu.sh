@@ -1,13 +1,13 @@
 #!/bin/bash
 
 function yadMainMenu() {
-#	ssrmLog "--image=\"${SSRM_BASEDIR}/ifpb_3.png\""
+	#ssrmLog "--image=\"${SSRM_BASEDIR}/ifpb_3.png\"" não resolveu, mantendo ---image="gtk-execute" 
 
 	#todo tentar trocar imagem do menu
 	ret=$(
-		yad --list  \
-			--image=\"${SSRM_BASEDIR}/ifpb_3.png\" \
-			--title="Menu Principal" --mouse --column="#" --column="Opção" --column="Descrição" --width=480 --height=250 \
+		yad --list --width=660 --height=250  \
+			--image="${SSRM_BASEDIR}/ifpb.png"  \
+			--title="Menu Principal" --mouse --column="#" --column="Opção" --column="Descrição" \
 			1 "Monitorar host" "Visualizar um host específico" \
 			2 "Inserir host" "Registrar um novo host p/ operação" \
 			3 "Editar host" "Alterar dados de host existente" \

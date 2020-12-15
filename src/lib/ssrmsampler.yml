@@ -1,0 +1,33 @@
+runcharts:
+  - title: Latência do site do IFPB
+    position: [[0, 8], [40, 24]]
+    rate-ms: 500
+    legend:
+        enabled: true
+        details: false
+    scale: 2
+    items:
+      - label: IFPB
+        color: 178
+        sample: curl -o /dev/null -s -w '%{time_total}'  https://www.ifpb.edu.br/
+sparklines:
+  - title: Uso de CPU
+    position: [[40, 8], [40, 24]]
+    rate-ms: 200
+    scale: 0
+    sample: ps -A -o %cpu | awk '{s+=$1} END {print s}'
+  - title: Memória Livre
+    position: [[0, 32], [80, 8]]
+    rate-ms: 200
+    scale: 0
+    sample: awk '/MemFree/ { printf "%d \n", $2/1/1 }' /proc/meminfo
+    #sample:  awk '/MemFree/ { printf "%.3f \n", $2/1024/1024 }' /proc/meminfo
+    #sample: awk -F': *' 'MemTotal" { split($2, f, / +/); print f[1] }' /proc/meminfo 
+asciiboxes:
+  - title: Monitoramento remoto Shell Script
+    position: [[0, 0], [80, 8]]
+    rate-ms: 5000
+    color: 43
+    sample: echo "Shell Script - IFPB"
+    border: false
+    font: 3d
