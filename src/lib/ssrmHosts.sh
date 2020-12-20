@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#todo Fazer uso de "set -a"/"set +a" para inibir a exportação de funções de uma arquivo 
+
 echo '{
 módulo contendo rottinas para tratamento de hosts da aplicação
 

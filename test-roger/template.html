@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" async="async"></script>
+    <link rel="stylesheet" media="all" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <style>
+        .thumb {
+            height: 300px;
+            border: 1px solid #000;
+            margin: 10px 5px 0 0;
+        }
+    </style>
+
+    example 1
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <form id="form1" runat="server">
+        <input type='file' id="imgInp" />
+        <img id="blah" class="thumb" src="#" alt="your image" />
+    </form>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imgInp").change(function () {
+            readURL(this);
+        });
+    </script>
+
+    <p>example 2</p>
+
+    <input type="file" id="files" style="display:none" accept="image/x-png,image/gif,image/jpeg" name="files[]" multiple />
+    <a href="javascript:;" onclick="getImage()" /> <img src="/usr/share/icons/Faenza/actions/32/gtk-open.png" /> </a>
+    <output id="list"></output>
+
+    <script>
+        function getImage() {
+            $('#files').click();
+        }
+    </script>
+
+    <script>
+        function handleFileSelect(evt) {
+            var files = evt.target.files; // FileList object
+
+            // Loop through the FileList and render image files as thumbnails.
+            for (var i = 0, f; f = files[i]; i++) {
+
+                // Only process image files.
+                if (!f.type.match('image.*')) {
+                    continue;
+                }
+
+                var reader = new FileReader();
+
+                // Closure to capture the file information.
+                reader.onload = (function (theFile) {
+                    return function (e) {
+                        // Render thumbnail.
+                        var span = document.createElement('span');
+                        span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+                        document.getElementById('list').insertBefore(span, null);
+                    };
+                })(f);
+
+                // Read in the image file as a data URL.
+                reader.readAsDataURL(f);
+            }
+        }
+
+        document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+    </script>
+</body>
+
+</html>
