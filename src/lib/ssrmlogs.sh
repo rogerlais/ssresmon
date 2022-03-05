@@ -2,7 +2,7 @@
 
 echo '{
 módulo com as rotinas de logo globais
-}' >/dev/null
+}' >$VERBOUT
 
 function ssrmLogInit() {
     parentdir="$(dirname "${1}}")"

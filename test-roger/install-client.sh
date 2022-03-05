@@ -13,7 +13,7 @@ function main() {
 
     if ${DBG_ENV}; then
         #!Ajuste de depuracao! erro se linha não nula não for inserida abaixo
-        echo "debug!" >/dev/null
+        echo "debug!" >$VERBOUT
         confSvcFile="${PWD}/test-roger/snmpd.conf.original"
     else
         confSvcFile="${SNMPD_CONF_FILE}"

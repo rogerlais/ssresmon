@@ -3,7 +3,7 @@
 #todo Fazer uso de "set -a"/"set +a" para inibir a exportação de funções de uma arquivo 
 
 echo '{
-módulo contendo rottinas para tratamento de hosts da aplicação
+módulo contendo rotinas para tratamento de hosts da aplicação
 
 #!Os arquivos de cada host possuem a seguinte estrutura
 [nnnn.dat]              #nome de arquivo com 4 digitos 
@@ -11,12 +11,12 @@ profile=<profilename>   #especie de nome curto para o host
 hostip=<name|ip>        #nome ou ip do host
 enabled=<0|1>           #idica se o host entra na lista de ativos monitorados no ciclo
 
-}' >/dev/null
+}' >$VERBOUT
 
 #dados forcados
 if ${DBG_ENV}; then
     #!Ajuste de depuracao! erro se linha não nula não for inserida abaixo
-    echo "debug mode!" >/dev/null
+    echo "debug mode!" >$VERBOUT
 fi
 
 #Leitra do caminho com os dados dos hosts registrados

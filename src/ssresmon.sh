@@ -22,6 +22,9 @@ function main() {
     if ${DBG_ENV}; then #!Ajuste de depuracao! erro se linha não nula não for inserida abaixo
         echo "debug!" >/dev/null
         SSRM_BASEDIR="${PWD}/src"
+		declare -g VERBOUT="/dev/tty"
+	else
+		declare -g VERBOUT="/dev/null"
     fi
     # shellcheck source=/dev/null
     source "${SSRM_BASEDIR}/lib/dialogMenu.sh"
@@ -52,7 +55,7 @@ function show_menu() {
     #escolhendo um opçao
     while (true); do
         unset RETFI
-        invokeMainMenu >/dev/null
+        invokeMainMenu >$VERBOUT
         case $RETFI in
         0) exit ;;
         1) #Monitorar

@@ -51,7 +51,7 @@ function show_MainMenu() {
 
 	case "$retcode" in
 	0) #Escolha efetivada
-		echo "${RETFI}" >/dev/null
+		echo "${RETFI}" >$VERBOUT
 		;;
 	255) #indica que aplicação será encerrada, pois foi cancelado pelo usuario
 		echo "0" ;;

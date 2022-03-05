@@ -15,7 +15,7 @@ function main() {
 
     if ${DBG_ENV}; then
         #!Ajuste de depuracao! erro se linha não nula não for inserida abaixo
-        echo "debug!" >/dev/null
+        echo "debug!" >$VERBOUT
         BASEDIR="${PWD}/Prototipos"
     else
         BASEDIR="${PWD}/Prototipos"
